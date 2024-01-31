@@ -1,3 +1,5 @@
 node_modules
 *.pem
 notes-api-backend.pem
+.env
+.prod.env
