@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable indent */
 /* eslint-disable quotes */
 require("dotenv").config();
@@ -5,6 +6,8 @@ require("dotenv").config();
 const Hapi = require("@hapi/hapi");
 const Jwt = require('@hapi/jwt');
 const notes = require("./api/notes");
+const collaborations = require('./api/collaborations');
+const _exports = require('./api/exports');
 const NotesService = require("./services/postgres/NotesService");
 const NotesValidator = require("./validator/notes");
 const users = require('./api/users');
@@ -14,9 +17,10 @@ const authentications = require('./api/authentications');
 const AuthenticationsService = require('./services/postgres/AuthenticationsService');
 const TokenManager = require('./tokenize/TokenManager');
 const AuthenticationsValidator = require('./validator/authentications');
-const collaborations = require('./api/collaborations');
 const CollaborationsService = require('./services/postgres/CollaborationsService');
 const CollaborationsValidator = require('./validator/collaborations');
+const ProducerService = require('./services/rabbitmq/ProducerService');
+const ExportsValidator = require('./validator/exports');
 const ClientError = require("./exceptions/ClientError");
 
 const init = async () => {
@@ -86,6 +90,13 @@ const init = async () => {
         collaborationsService,
         notesService,
         validator: CollaborationsValidator,
+      },
+    },
+    {
+      plugin: _exports,
+      options: {
+        service: ProducerService,
+        validator: ExportsValidator,
       },
     },
   ]);
