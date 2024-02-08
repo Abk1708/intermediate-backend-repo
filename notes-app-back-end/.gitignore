@@ -3,3 +3,4 @@ node_modules
 notes-api-backend.pem
 .env
 .prod.env
+src/api/uploads/file
